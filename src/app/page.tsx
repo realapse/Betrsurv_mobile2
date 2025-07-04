@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { PeraWalletConnect } from "@perawallet/connect";
 
-const peraWallet = new PeraWalletConnect({ chainId: "416002" });
+const peraWallet = new PeraWalletConnect({ chainId: "416002" }); // TestNet
 
 export default function Home() {
   const [account, setAccount] = useState<string | null>(null);
@@ -23,7 +23,7 @@ export default function Home() {
       const accounts = await peraWallet.connect();
       if (accounts.length) setAccount(accounts[0]);
     } catch (err) {
-      console.error("Wallet connection error:", err);
+      console.error("Wallet connect error:", err);
     }
   };
 
@@ -33,8 +33,8 @@ export default function Home() {
   };
 
   const submitSurvey = () => {
-    console.log("Survey submitted:", { account, answer });
-    alert("Truth submitted. God sees you, Realapse.");
+    console.log("Truth submitted:", { account, answer });
+    alert("Truth received. Thank you, Realapse.");
   };
 
   return (
@@ -51,7 +51,7 @@ export default function Home() {
           <textarea
             value={answer}
             onChange={(e) => setAnswer(e.target.value)}
-            placeholder="Share your truth..."
+            placeholder="Speak your truth..."
             className="w-full p-2 bg-gray-900 text-white rounded"
             rows={4}
           />
