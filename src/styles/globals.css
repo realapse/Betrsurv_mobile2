@@ -92,6 +92,16 @@
   }
 }
 
+@layer components {
+  .btn-blue {
+    @apply bg-blue-600 text-white px-4 py-2 rounded-lg;
+  }
+
+  .btn-green {
+    @apply bg-green-500 text-white px-4 py-2 rounded-lg;
+  }
+}
+
 @layer utilities {
   .animated-underline {
     background-image: linear-gradient(#33333300, #33333300),
