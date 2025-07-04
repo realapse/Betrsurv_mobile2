@@ -1,55 +1,65 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { PeraWalletConnect } from "@perawallet/connect";
 
-const peraWallet = new PeraWalletConnect({ chainId: "416002" }); // TestNet
+const peraWallet = new PeraWalletConnect({ chainId: "416002" });
 
 export default function Home() {
   const [account, setAccount] = useState<string | null>(null);
-  const [answer, setAnswer] = useState("");
+  const [answer, setAnswer] = useState<string>("");
 
   useEffect(() => {
-    peraWallet.reconnectSession().then((accounts) => {
+    peraWallet.reconnectSession().then((accounts: string[]) => {
       if (accounts.length) setAccount(accounts[0]);
     });
-    peraWallet.connector?.on("disconnect", () => setAccount(null));
+
+    peraWallet.connector?.on("disconnect", () => {
+      setAccount(null);
+    });
   }, []);
 
   const connectWallet = async () => {
-    const accounts = await peraWallet.connect();
-    if (accounts.length) setAccount(accounts[0]);
+    try {
+      const accounts = await peraWallet.connect();
+      if (accounts.length) setAccount(accounts[0]);
+    } catch (err) {
+      console.error("Wallet connection error:", err);
+    }
   };
 
-  const disconnect = () => peraWallet.disconnect();
+  const disconnect = () => {
+    peraWallet.disconnect();
+    setAccount(null);
+  };
 
   const submitSurvey = () => {
-    console.log("Submitted:", { account, answer });
-    alert("Thank you for your truth, Realapse.");
+    console.log("Survey submitted:", { account, answer });
+    alert("Truth submitted. God sees you, Realapse.");
   };
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-4 bg-black text-white">
+    <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4">
       <h1 className="text-3xl font-bold mb-6 text-center">B3TRSURV Mobile</h1>
 
       {!account ? (
         <button onClick={connectWallet} className="btn-blue">
-          Connect Pera Wallet
+          Connect Wallet
         </button>
       ) : (
         <div className="w-full max-w-md space-y-4">
-          <p>Connected: {account}</p>
+          <p className="text-sm text-center">Connected: {account}</p>
           <textarea
             value={answer}
             onChange={(e) => setAnswer(e.target.value)}
-            className="w-full p-2 bg-gray-800 text-white rounded"
+            placeholder="Share your truth..."
+            className="w-full p-2 bg-gray-900 text-white rounded"
             rows={4}
-            placeholder="Speak your truth..."
           />
           <button onClick={submitSurvey} className="btn-green w-full">
             Submit
           </button>
           <button onClick={disconnect} className="text-sm underline mt-2">
-            Disconnect Wallet
+            Disconnect
           </button>
         </div>
       )}
