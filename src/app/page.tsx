@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { PeraWalletConnect } from "@perawallet/connect";
 
-const peraWallet = new PeraWalletConnect({ chainId: "416002" });
+const peraWallet = new PeraWalletConnect({ chainId: "416002" }); // TestNet
 
 export default function Home() {
   const [account, setAccount] = useState<string | null>(null);
@@ -32,10 +32,7 @@ export default function Home() {
       <h1 className="text-3xl font-bold mb-6 text-center">B3TRSURV Mobile</h1>
 
       {!account ? (
-        <button
-          onClick={connectWallet}
-          className="btn-blue"
-        >
+        <button onClick={connectWallet} className="btn-blue">
           Connect Pera Wallet
         </button>
       ) : (
@@ -48,16 +45,10 @@ export default function Home() {
             rows={4}
             placeholder="Speak your truth..."
           />
-          <button
-            onClick={submitSurvey}
-            className="btn-green w-full"
-          >
+          <button onClick={submitSurvey} className="btn-green w-full">
             Submit
           </button>
-          <button
-            onClick={disconnect}
-            className="text-sm underline mt-2"
-          >
+          <button onClick={disconnect} className="text-sm underline mt-2">
             Disconnect Wallet
           </button>
         </div>
